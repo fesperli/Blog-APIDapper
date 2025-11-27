@@ -1,6 +1,0 @@
-@BlogDapperAPI_HostAddress = http://localhost:5064
-
-GET {{BlogDapperAPI_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
