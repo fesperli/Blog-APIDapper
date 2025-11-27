@@ -26,5 +26,18 @@ namespace Blog.API.Services
             await _userRepository.CreateUserAsync(newUser);
 
         }
+        public async Task<UserResponseDTO> GetUserByIdAsync(int id)
+        {
+            return await _userRepository.GetUserByIDAsync(id);
+        }
+        public async Task UpdateUserByIdAsync(UserRequestDTO user, int id)
+        {
+            var updatedUser = new User(user.Name, user.Email, user.PasswordHash, user.Bio, user.Image, user.Name.ToLower().Replace(" ", "-"));
+            await _userRepository.UpdateUserByIDAsync(updatedUser, id);
+        }
+        public async Task DeleteUserByIdAsync(int id)
+        {
+            await _userRepository.DeleteUserByIDAsync(id);
+        }
     }
 }

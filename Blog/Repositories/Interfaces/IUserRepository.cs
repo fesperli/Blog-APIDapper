@@ -8,5 +8,9 @@ namespace Blog.API.Repositories.Interfaces
         Task<List<UserResponseDTO>> GetAllUsersAsync();
 
         Task CreateUserAsync(User user);
+        Task<UserResponseDTO> GetUserByIDAsync(int id);
+        Task UpdateUserByIDAsync(User user, int id);
+        Task DeleteUserByIDAsync(int id);
+
     }
 }

@@ -37,6 +37,37 @@ namespace Blog.API.Controllers
 
             return Created();
         }
-  
+        [HttpGet("GetById")]
+        public async Task<ActionResult<UserResponseDTO>> GetUserByIdAsync(int id)
+        {
+            var user = await _userService.GetUserByIdAsync(id);
+            if (user is null)
+            {
+                return NotFound();
+            }
+            return Ok(user);
+        }
+
+        [HttpPut("UpdateById")]
+        public async Task<ActionResult> UpdateUserByIdAsync(UserRequestDTO user, int id ){
+            var userFound = await _userService.GetUserByIdAsync(id);
+            if (userFound is null)
+            {
+                return NotFound();
+            }
+            await _userService.UpdateUserByIdAsync(user, id);
+            return Ok();
+        }
+        [HttpDelete("DeleteById")]
+        public async Task<ActionResult> DeleteUserByIdAsync(int id)
+        {
+            var userFound = await _userService.GetUserByIdAsync(id);
+            if (userFound is null)
+            {
+                return NotFound();
+            }
+            await _userService.DeleteUserByIdAsync(id);
+            return Ok();
+        }
     }
 }
