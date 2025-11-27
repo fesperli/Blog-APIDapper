@@ -8,7 +8,7 @@ using System.Data;
 
 namespace Blog.API.Controllers
 {
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class RoleController : ControllerBase
     {
