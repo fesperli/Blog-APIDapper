@@ -20,10 +20,21 @@ namespace Blog.API.Services
             return await _tagRepository.GetAllTagsAsync();
         }
 
-        public async Task CreateTagAsync(TagRequestDTO tag)
+        public async Task<TagResponseDTO> CreateTagAsync(TagResponseDTO tag)
         {
-            var newTag = new Tag(tag.Name, tag.Name.ToLower().Replace(" ", "-"));
-            await _tagRepository.CreateTagAsync(newTag);
+            // 1. Cria a entidade
+            var taG = new Tag(tag.Name, tag.Slug);
+
+            // 2. Chama o repo e GUARDA O ID que voltou
+            var novoId = await _tagRepository.CreateTagAsync(taG);
+
+            // 3. Monta a resposta JÁ COM O ID
+            return new TagResponseDTO
+            {
+                Id = novoId, // <--- Aqui está a mágica
+                Name = tag.Name,
+                Slug = tag.Slug
+            };
         }
 
         public async Task<TagResponseDTO> GetTagByIDAsync(int id)

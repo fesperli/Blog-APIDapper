@@ -31,11 +31,11 @@ namespace Blog.API.Controllers
         }
 
         [HttpPost("Create")]
-        public async Task<ActionResult> CreateTagAsync(TagRequestDTO tag)
-        {
-            await _tagService.CreateTagAsync(tag);
+        public async Task<ActionResult> Create([FromBody] TagResponseDTO request)
+        { 
+            var tagCriada = await _tagService.CreateTagAsync(request);
 
-            return Created();
+            return Ok(tagCriada);
         }
 
         [HttpGet("GetByID")]

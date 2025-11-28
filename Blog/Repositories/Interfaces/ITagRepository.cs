@@ -7,7 +7,7 @@ namespace Blog.API.Repositories.Interfaces
     {
         Task<List<TagResponseDTO>> GetAllTagsAsync();
 
-        Task CreateTagAsync(Tag tag);
+        Task <int> CreateTagAsync(Tag tag);
 
         Task<TagResponseDTO> GetTagByIDAsync(int id);
 

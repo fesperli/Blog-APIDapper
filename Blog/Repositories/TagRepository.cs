@@ -23,10 +23,16 @@ namespace Blog.API.Repositories
             return (await _connection.QueryAsync<TagResponseDTO>(sql)).ToList();
         }
 
-        public async Task CreateTagAsync(Tag tag)
+        public async Task<int> CreateTagAsync(Tag tag)
         {
-            var sql = "INSERT INTO Tag (Name,Slug) VALUES (@Name,@Slug)";
-            await _connection.ExecuteAsync(sql, new { tag.Name, tag.Slug });
+            var sql = @"
+        INSERT INTO Tag (Name, Slug) 
+        VALUES (@Name, @Slug);
+        SELECT CAST(SCOPE_IDENTITY() as int)";
+
+            var id = await _connection.QuerySingleAsync<int>(sql, tag);
+
+            return id; 
         }
 
         public async Task<TagResponseDTO> GetTagByIDAsync(int id)
