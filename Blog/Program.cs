@@ -9,6 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
+
 builder.Services.AddTransient<ConnectionDB>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
@@ -18,6 +19,7 @@ builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IRoleService, RoleService>();
 builder.Services.AddScoped<ITagService, TagService>();
 builder.Services.AddScoped<IUserService, UserService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

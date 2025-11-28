@@ -9,6 +9,7 @@ namespace Blog.API.Models
         public string Name { get; private set; }
 
         public string Slug { get; private set; }
+        public List<User> Users { get; set; }
 
 
         [JsonConstructor]
@@ -16,6 +17,13 @@ namespace Blog.API.Models
         {
             Name = name;
             Slug = slug;
+        }
+        [JsonConstructor]
+        public Role(int id, string name, string slug) 
+        {
+            Id = id;
+            Name = name;
+            Users = new List<User>();
         }
     }
 }

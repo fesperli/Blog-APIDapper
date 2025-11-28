@@ -28,20 +28,95 @@ namespace Blog.API.Repositories
             await _connection.ExecuteAsync(sql, new { user.Name, user.Email, user.PasswordHash, user.Bio, user.Image, user.Slug });
         }
 
-        public async Task<UserResponseDTO> GetUserByIDAsync(int id)
+        public async Task<UserResponseDTO> GetUserByIdDAsync(int id)
         {
             var sql = "SELECT Name,Email,PasswordHash,Bio,Image,Slug FROM [User] WHERE Id = @Id";
             return await _connection.QueryFirstOrDefaultAsync<UserResponseDTO>(sql, new { Id = id });
         }
-        public async Task UpdateUserByIDAsync(User user, int id)
+        public async Task UpdateUserByIdAsync(User user, int id)
         {
             var sql = "UPDATE [User] SET Name = @Name, Email = @Email, PasswordHash = @PasswordHash, Bio = @Bio, Image = @Image, Slug = @Slug WHERE Id = @Id";
             await _connection.ExecuteAsync(sql, new { user.Name, user.Email, user.PasswordHash, user.Bio, user.Image, user.Slug, Id = id });
         }
-        public async Task DeleteUserByIDAsync(int id)
+        public async Task DeleteUserByIdAsync(int id)
         {
             var sql = "DELETE FROM [User] WHERE Id = @Id";
             await _connection.ExecuteAsync(sql, new { Id = id });
+        }
+        public async Task<List<User>> GetAllUserRoles()
+        {
+            IEnumerable<User> userRoles = new List<User>();
+
+            var sql = "SELECT " +
+                      "u.Id,u.Name,u.Email,u.PasswordHash,u.Bio,u.Image,u.Slug,r.Id " +
+                      "AS Id,r.Name,r.Slug " +
+                      "FROM [USER] u" +
+                      " LEFT JOIN UserRole ur " +
+                      "ON u.Id = ur.UserId " +
+                      "LEFT JOIN [Role] r ON r.Id = ur.RoleId " +
+                      "WHERE u.Id = @UserID;";
+
+            var userDictionary = new Dictionary<int, User>();
+
+            
+           
+                var re = await _connection.QueryAsync<User, Role, User>(
+            sql,
+            (user, role) =>
+            {
+                if (!userDictionary.TryGetValue(user.Id, out var userExiste))
+                {
+                   userDictionary.Add(user.Id, user);
+                    userExiste = user;
+                }
+
+                if (role is not null)
+                {
+                    userExiste.Roles.Add(role);
+                }
+
+                return userExiste;
+            },
+
+            splitOn: "Id" 
+        );
+            
+            return userDictionary.Values.ToList();
+        }
+        public async Task <User> GetUserRolesId(int id)
+        {
+            var sql = "SELECT " +
+                      "u.Id,u.Name,u.Email,u.PasswordHash,u.Bio,u.Image,u.Slug,r.Id " +
+                      "AS Id,r.Name,r.Slug " +
+                      "FROM [USER] u" +
+                      " LEFT JOIN UserRole ur " +
+                      "ON u.Id = ur.UserId " +
+                      "LEFT JOIN [Role] r ON r.Id = ur.RoleId " +
+                      "WHERE u.Id = @UserID;";
+
+            var userDictionary = new Dictionary<int, User>();
+
+            await _connection.QueryAsync<User, Role, User> (
+                sql,
+                (user, role) =>
+                {
+                    if (!userDictionary.TryGetValue(user.Id, out var userExiste))
+                    {
+                        userDictionary.Add(user.Id, user);
+                        userExiste = user;
+                    }
+                    if (role is not null)
+                    {
+                        userExiste.Roles.Add(role);
+                    }
+
+                    return userExiste;
+                },
+                param : new { id = id },
+                splitOn: "Id"
+                
+                );
+            return userDictionary.Values.FirstOrDefault();
         }
     }
 }
