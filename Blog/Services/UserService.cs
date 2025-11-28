@@ -87,6 +87,10 @@ namespace Blog.API.Services
             };
             return dto;
         }
+        public async Task<bool> CreateUserRolesAsync(int userId, int roleId)
+        {
+            return await _userRepository.CreateUserRolesAsync(userId, roleId);
+        }
     }
 }
 

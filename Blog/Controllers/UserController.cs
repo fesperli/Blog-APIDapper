@@ -81,5 +81,22 @@ namespace Blog.API.Controllers
             var user = await _userService.GetUserRolesId(id);
             return Ok (user);
         }
+        [HttpPost("CreateUserPost")]
+
+        public async Task <ActionResult> CreateUserRolesAsync(UserRolesRequestDTO userRole)
+        {
+            if (userRole.UserId <= 0 || userRole.RoleId <= 0)
+            {
+                return BadRequest("Nao existe os ids inseridos");
+            }
+            var insert = await _userService.CreateUserRolesAsync(userRole.UserId, userRole.RoleId);
+
+            if (!insert)
+            {
+                return BadRequest("");
+            }
+            return Ok("");
+        }
+
     }
 }

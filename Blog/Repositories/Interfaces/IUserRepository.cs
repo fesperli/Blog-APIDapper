@@ -13,5 +13,6 @@ namespace Blog.API.Repositories.Interfaces
         Task DeleteUserByIdAsync(int id);
         Task<List<User>> GetAllUserRoles();
         Task<User> GetUserRolesId(int id);
+        Task<bool> CreateUserRolesAsync(int userId, int roleId);
     }
 }

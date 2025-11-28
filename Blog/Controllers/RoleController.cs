@@ -26,7 +26,7 @@ namespace Blog.API.Controllers
             return Ok("Online");
         }
 
-        [HttpGet("GetAll")]
+        [HttpGet("GetAllRoles")]
         public async Task<ActionResult<List<RoleResponseDTO>>> GetAllRolesAsync()
         {   
             return Ok(await _roleService.GetAllRolesAsync());

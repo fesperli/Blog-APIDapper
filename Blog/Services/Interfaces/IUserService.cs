@@ -18,5 +18,9 @@ namespace Blog.API.Services.Interfaces
         Task<List<UserRolesResponseDTO>> GetAllUsersRoles();
 
         Task<UserRolesResponseDTO> GetUserRolesId(int id);
+
+        Task<bool> CreateUserRolesAsync(int userId, int roleId);
+
+
     }
 }
