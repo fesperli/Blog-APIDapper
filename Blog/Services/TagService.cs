@@ -22,16 +22,16 @@ namespace Blog.API.Services
 
         public async Task<TagResponseDTO> CreateTagAsync(TagResponseDTO tag)
         {
-            // 1. Cria a entidade
+           
             var taG = new Tag(tag.Name, tag.Slug);
 
-            // 2. Chama o repo e GUARDA O ID que voltou
+           
             var novoId = await _tagRepository.CreateTagAsync(taG);
 
-            // 3. Monta a resposta JÁ COM O ID
+           
             return new TagResponseDTO
             {
-                Id = novoId, // <--- Aqui está a mágica
+                Id = novoId, 
                 Name = tag.Name,
                 Slug = tag.Slug
             };
